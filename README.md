@@ -1,8 +1,8 @@
 # Doxtr Documentation Runtime Environment
 
-This podman image contains a Sphinx documentation toolchain with support for
+This container image contains a Sphinx documentation toolchain with support for
 
-* Full [TeX Live](https://www.tug.org/texlive/) LaTeX installation
+* **Full** [TeX Live](https://www.tug.org/texlive/) LaTeX installation
 * [Markdown](https://daringfireball.net/projects/markdown/)
 * [PlantUML](https://plantuml.com/)
 * [Read the Docs Sphinx Theme](https://sphinx-rtd-theme.readthedocs.io/en/stable/)
@@ -14,6 +14,8 @@ This podman image contains a Sphinx documentation toolchain with support for
 * [Jupyter Book](https://jupyterbook.org/intro.html) support
 * [Excel Table Plus](https://pypi.org/project/sphinxcontrib-excel-table-plus/) support
 * [Exceltable](https://pythonhosted.org/sphinxcontrib-exceltable/) support
+
+and more.
 
 # Build podman Image
 
@@ -36,7 +38,7 @@ You can build and push your own version of the image easily with:
 Tag what you want to release
 
 ```bash
-#> export VERSION=v1.0.0 && git tag $VERSION && git push origin $VERSION
+#> export VERSION=v0.0.1 && git tag $VERSION && git push origin $VERSION
 ```
 
 Then hit 'Create a new release'on the right side of your github repository.
