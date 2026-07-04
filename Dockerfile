@@ -1,10 +1,10 @@
-FROM doxtr/reactor-builder-assets:0.0.4 AS builder
+FROM doxtr/reactor-builder-assets:0.0.5 AS builder
 
 # ==========================================
 # STAGE 2: Final Runtime Environment
 # ==========================================
 FROM ubuntu:24.04
-LABEL maintainer="Jens Frey <jens.frey@coffeecrew.org>" Version="2026-06-03"
+LABEL maintainer="Jens Frey <jens.frey@coffeecrew.org>" Version="2026-07-04"
 
 # Setup Environment Variables
 ENV DEBIAN_FRONTEND=noninteractive \
