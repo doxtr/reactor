@@ -1,10 +1,10 @@
-FROM doxtr/reactor-builder-assets:0.0.6 AS builder
+FROM doxtr/reactor-builder-assets:0.0.7 AS builder
 
 # ==========================================
 # STAGE 2: Final Runtime Environment
 # ==========================================
 FROM ubuntu:24.04
-LABEL maintainer="Jens Frey <jens.frey@coffeecrew.org>" Version="2026-07-13"
+LABEL maintainer="Jens Frey <jens.frey@coffeecrew.org>" Version="2026-08-01"
 
 # Setup Environment Variables
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -49,7 +49,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends /tmp/drawio.deb
 
 # Install NVM, Node.js (LTS)
 # We use a single RUN to ensure the environment setup is encapsulated
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash \
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.6/install.sh | bash \
      && mkdir -p $NVM_DIR \
      && mkdir -p /usr/local/bin/{node,npm} \
      && . $NVM_DIR/nvm.sh \
