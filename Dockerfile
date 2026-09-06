@@ -1,5 +1,5 @@
 # Asset builder stage (venv, PlantUML, Draw.io, d2)
-FROM doxtr/reactor-builder-assets:0.0.9 AS builder
+FROM doxtr/reactor-builder-assets:0.0.10 AS builder
 
 # Dedicated fonts image — fonts are imported from here instead of the builder.
 # Pin this tag to match your published fonts image.
