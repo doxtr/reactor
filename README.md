@@ -30,7 +30,7 @@ $#> podman build -t doxtr/reactor .
 You can build and push your own version of the image easily with:
 
 ```bash
-#> export VERSION=0.0.1 && podman build -t doxtr/reactor:$VERSION . && podman push doxtr/reactor:$VERSION
+#> export VERSION=0.1.0 && podman build -t doxtr/reactor:$VERSION . && podman push doxtr/reactor:$VERSION
 ```
 
 # Building for Github release

@@ -27,11 +27,11 @@ jobs:
         include:
           - platform: linux/arm64
             arch: arm64
-            github_hosted_label: ubuntu-24.04-arm
+            github_hosted_label: ubuntu-26.04-arm
             self_hosted_label: self-hosted-arm64
           - platform: linux/amd64
             arch: amd64
-            github_hosted_label: ubuntu-24.04
+            github_hosted_label: ubuntu-26.04
             self_hosted_label: self-hosted-amd64
             
     runs-on: ${{ (inputs.use_self_hosted == true || vars.USE_SELF_HOSTED == 'true') && matrix.self_hosted_label || matrix.github_hosted_label }}
