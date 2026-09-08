@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openjdk-25-jdk-headless plantuml python3-docutils \
     latexmk xindy lmodern texlive-full \
     texlive-fonts-extra texlive-fonts-recommended texlive-font-utils \
-    ghostscript dvipng qpdf tikzit qtikz \
+    ghostscript dvipng qpdf poppler-utils tikzit qtikz \
     nginx xvfb fontconfig ca-certificates \
     # Draw.io dependencies
     libgl1-mesa-dri libosmesa6 x11-xserver-utils \
@@ -46,6 +46,10 @@ COPY --from=builder /opt/venv /opt/venv
 COPY --from=builder /staging/plantuml.jar /usr/local/plantuml/plantuml.jar
 COPY --from=builder /staging/drawio.deb /tmp/drawio.deb
 COPY --from=builder /usr/local/bin/d2 /usr/local/bin/d2
+
+# Pre-provision d2's Chromium (exact pinned revision) into the runtime image.
+RUN printf 'y\n' | (printf 'x -> y\n' | d2 - /tmp/_warmup.png) >/dev/null 2>&1 || true; \
+    rm -f /tmp/_warmup.png
 
 # Copy fonts from the dedicated fonts image
 COPY --from=fonts /staging/fonts /usr/share/fonts/truetype/custom
