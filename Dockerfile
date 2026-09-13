@@ -1,5 +1,5 @@
 # Asset builder stage (venv, PlantUML, Draw.io, d2)
-FROM doxtr/reactor-builder-assets:0.0.10 AS builder
+FROM doxtr/reactor-builder-assets:0.0.11 AS builder
 
 # Dedicated fonts image — fonts are imported from here instead of the builder.
 # Pin this tag to match your published fonts image.
@@ -9,7 +9,9 @@ FROM doxtr/reactor-builder-fonts:0.0.1 AS fonts
 # STAGE 2: Final Runtime Environment
 # ==========================================
 FROM ubuntu:26.04
-LABEL maintainer="Jens Frey <jens.frey@coffeecrew.org>" Version="2026-09-06"
+LABEL maintainer="Jens Frey <jens.frey@coffeecrew.org>" Version="2026-09-13"
+
+ARG NVM_VER=v0.40.7
 
 # Setup Environment Variables
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -47,10 +49,6 @@ COPY --from=builder /staging/plantuml.jar /usr/local/plantuml/plantuml.jar
 COPY --from=builder /staging/drawio.deb /tmp/drawio.deb
 COPY --from=builder /usr/local/bin/d2 /usr/local/bin/d2
 
-# Pre-provision d2's Chromium (exact pinned revision) into the runtime image.
-RUN printf 'y\n' | (printf 'x -> y\n' | d2 - /tmp/_warmup.png) >/dev/null 2>&1 || true; \
-    rm -f /tmp/_warmup.png
-
 # Copy fonts from the dedicated fonts image
 COPY --from=fonts /staging/fonts /usr/share/fonts/truetype/custom
 
@@ -60,7 +58,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends /tmp/drawio.deb
 
 # Install NVM, Node.js (LTS)
 # We use a single RUN to ensure the environment setup is encapsulated
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.6/install.sh | bash \
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VER}/install.sh | bash \
      && mkdir -p $NVM_DIR \
      && mkdir -p /usr/local/bin/{node,npm} \
      && . $NVM_DIR/nvm.sh \
@@ -74,6 +72,9 @@ RUN apt-get update && apt-get install -y curl gnupg \
     && echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" > /etc/apt/sources.list.d/google-cloud-sdk.list \
     && apt-get update && apt-get install -y google-cloud-cli \
     && rm -rf /var/lib/apt/lists/*
+
+# Pre-provision d2's Chromium (exact pinned revision) into the runtime image.
+RUN printf 'x -> y\n' > /tmp/_warmup.d2; printf 'y\n' | d2 /tmp/_warmup.d2 /tmp/_warmup.png >/dev/null 2>&1 || true && rm -f /tmp/_warmup.png /tmp/_warmup.d2
 
 # Final Configurations (PlantUML symlink & Font Cache)
 RUN export TERM=dumb && \
