@@ -1,5 +1,5 @@
 # Asset builder stage (venv, PlantUML, Draw.io, d2)
-FROM doxtr/reactor-builder-assets:0.0.11 AS builder
+FROM doxtr/reactor-builder-assets:0.0.12 AS builder
 
 # Dedicated fonts image — fonts are imported from here instead of the builder.
 # Pin this tag to match your published fonts image.
@@ -9,7 +9,7 @@ FROM doxtr/reactor-builder-fonts:0.0.1 AS fonts
 # STAGE 2: Final Runtime Environment
 # ==========================================
 FROM ubuntu:26.04
-LABEL maintainer="Jens Frey <jens.frey@coffeecrew.org>" Version="2026-09-13"
+LABEL maintainer="Jens Frey <jens.frey@coffeecrew.org>" Version="2026-09-15"
 
 ARG NVM_VER=v0.40.7
 
