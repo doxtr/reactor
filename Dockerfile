@@ -1,5 +1,5 @@
 # Asset builder stage (venv, PlantUML, Draw.io, d2)
-FROM doxtr/reactor-builder-assets:0.0.13 AS builder
+FROM doxtr/reactor-builder-assets:0.0.14 AS builder
 
 # Dedicated fonts image — fonts are imported from here instead of the builder.
 # Pin this tag to match your published fonts image.
@@ -9,7 +9,7 @@ FROM doxtr/reactor-builder-fonts:0.0.1 AS fonts
 # STAGE 2: Final Runtime Environment
 # ==========================================
 FROM ubuntu:26.04
-LABEL maintainer="Jens Frey <jens.frey@coffeecrew.org>" Version="2026-09-15"
+LABEL maintainer="Jens Frey <jens.frey@coffeecrew.org>" Version="2026-09-19"
 
 ARG NVM_VER=v0.40.7
 
@@ -20,7 +20,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     TEXMFCACHE=/var/lib/texmf \
     LUAOTFLOAD_CACHE=/var/lib/texmf/luatex-cache \
     LC_ALL=C \
-    NVM_DIR=/root/.nvm
+    NVM_DIR=/root/.nvm \
+    DOXTR_RAG_BGE_M3_ONNX_DIR=/opt/models/bge-m3
 
 COPY .bashrc /root/.bashrc
 COPY default.template /etc/nginx/templates/default.template
@@ -48,6 +49,8 @@ COPY --from=builder /opt/venv /opt/venv
 COPY --from=builder /staging/plantuml.jar /usr/local/plantuml/plantuml.jar
 COPY --from=builder /staging/drawio.deb /tmp/drawio.deb
 COPY --from=builder /usr/local/bin/d2 /usr/local/bin/d2
+# doxtr-rag: pre-baked bge-m3 ONNX weights (1024-dim, pinned revision)
+COPY --from=builder /staging/models/bge-m3 /opt/models/bge-m3
 
 # Copy fonts from the dedicated fonts image
 COPY --from=fonts /staging/fonts /usr/share/fonts/truetype/custom
